@@ -1,36 +1,36 @@
-// TODO
-// TODO
+#ifndef TESTLIB_H
 #define TESTLIB_H
 
-// TODO
-// TODO
+#include <iostream>
 
-    // TODO
-    // TODO
-    Data max(Data a, Data b);
+namespace TestLib {
+    template<typename Data>
+    Data max(Data a, Data b) {
+        return (a > b) ? a : b;
+    }
 
     struct Point {
         int x;
         int y;
     };
 
-    /*TODO*/  /*TODO*/ Point* coordsVector_impl(
-        /*TODO*//*TODO*/
-    );
+    static Point* coordsVector_impl(const Point& start, const Point& end);
 
-    Point coordsVector(/*TODO*//*TODO*/);
+    Point coordsVector(const Point& start, const Point& end);
 
-    // TODO
-    // TODO
+    template<typename... Args>
     void print(Args... args);
 
-    // TODO
-    // TODO
-    void print(const Head &head, Tail... tail);
+    template<typename Head, typename... Tail>
+    void print(const Head &head, Tail... tail) {
+        std::cout << head << ' ';
+        print(tail...);
+    }
 
-    // TODO
-    // TODO
+    template<>
+    void print() {
+        std::cout << std::endl;
+    }
+}
 
-
-// TODO
-// TODO
+#endif
