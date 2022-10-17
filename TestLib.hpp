@@ -2,35 +2,44 @@
 #define TESTLIB_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 namespace TestLib {
-    template<typename Data>
-    Data max(Data a, Data b) {
-        return (a > b) ? a : b;
-    }
-
-    struct Point {
-        int x;
-        int y;
+    struct Logger {
+        std::ofstream log_file;
+        bool is_binary;
     };
 
-    static Point* coordsVector_impl(const Point& start, const Point& end);
-
-    Point coordsVector(const Point& start, const Point& end);
+    Logger* initLogger(/*TODO тут должна быть строка*/);
 
     template<typename... Args>
-    void print(Args... args);
+    char* getStr(Args... args);
 
     template<typename Head, typename... Tail>
-    void print(const Head &head, Tail... tail) {
-        std::cout << head << ' ';
-        print(tail...);
+    char* getStr(const Head &head, Tail... tail) {
+        // TODO
     }
 
     template<>
-    void print() {
-        std::cout << std::endl;
+    char* getStr() {
+        // TODO
     }
+
+    template<typename... Args>
+    void print(const Logger &logger, Args... args);
+
+    template<typename Head, typename... Tail>
+    void print(const Logger &logger, const Head &head, Tail... tail) {
+        // TODO
+    }
+
+    template<>
+    void print(const Logger &logger) {
+        // TODO
+    }
+
+    void readLogFile(/*TODO тут должна быть строка*/);
 }
 
 #endif
