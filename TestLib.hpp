@@ -6,6 +6,47 @@
 #include <string>
 
 namespace TestLib {
+    // typedef int Data;
+    using Data = int;
+
+    struct Node {
+        Node *next = nullptr;
+        Data data;
+    };
+
+    void addNode(Node **head, const Data &data) {
+        if (!(*head)) {
+            (*head) = new Node;
+            (*head)->data = data;
+        }
+        Node *cur_node = *head;
+        while (cur_node) {
+            if (!cur_node->next) {
+                cur_node->next = new Node;
+                cur_node->next->data = data;
+                break;
+            }
+            cur_node = cur_node->next;
+        }
+    }
+
+    void print(Node *head, size_t idx = 0) {
+        Node *cur_node = head;
+        bool isFind = false;
+        for (size_t i = 0; i <= idx && cur_node; i++) {
+            cur_node = cur_node->next;
+            if (i == idx) {
+                isFind = true;
+            }
+        }
+        if (isFind) {
+            std::cout << cur_node->data << std::endl;
+        } else {
+            std::cout << "Not find" << std::endl;
+        }
+    }
+
+
     struct Logger {
         std::ofstream log_file;
         bool is_binary;
@@ -60,6 +101,8 @@ namespace TestLib {
     }
 
     void readLogFile(/*TODO тут должна быть строка*/);
+
+    bool isValid(const std::string&, const std::string&);
 }
 
 #endif
