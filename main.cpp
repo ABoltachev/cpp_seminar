@@ -5,36 +5,27 @@
 #include <iomanip>
 
 int main() {
-    TestLib::Logger *logger = TestLib::initLogger("test.log.bin", true);
-    TestLib::print(*logger, 10, 3.14);
+    uint32_t uid = 10;
+    std::string username = "Anchovy";
+    std::string name = "Aleksandr Boltachev";
+    float salary = 500.;
+    TestLib::Employee employee {uid, username, name, salary};
+    employee.print();
+    // TestLib::ImprovedEmployee employee {uid, username, name, salary}; не должно работать
+    TestLib::ImprovedEmployee improved_employee_1;
+    improved_employee_1.setUid(uid);
+    improved_employee_1.setUserName(username);
+    improved_employee_1.setName(name);
+    improved_employee_1.setSalary(salary);
+    improved_employee_1.print();
 
-    // std::string pattern = "#(###)-###-####";
-    // std::string str;
-    // std::cin >> str;
-    // std::cout << std::boolalpha << TestLib::isValid(str, pattern) << std::endl;
-    // int number;
-    // std::cin >> number;
-    // if (std::cin.fail()) {
-    //     std::cout << "Incorrect input" << std::endl;
-    //     std::cin.ignore(32000, '\n');
-    //     std::cin.clear();
-    // }
-    // throw std::exception();
+    TestLib::ImprovedEmployee improved_employee_2 {improved_employee_1};
+    improved_employee_2.print();
 
-
-    TestLib::Node *list = nullptr;
-    while (true) {
-        int number;
-        std::cout << "Введите число: ";
-        std::cin >> number;
-        if (number < 0) {
-            break;
-        }
-        TestLib::addNode(&list, number);
-    }
-
-    TestLib::print(list, 2);
-
+    TestLib::EmployeeList list;
+    list.addEmployee(improved_employee_1);
+    list.creatNewEmployee(uid + 10, username, name, salary);
+    list.print();
     return 0;
 }
 
