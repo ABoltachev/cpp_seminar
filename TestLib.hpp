@@ -2,70 +2,61 @@
 #define TESTLIB_H
 
 #include <iostream>
-#include <fstream>
-#include <string>
 
 namespace TestLib {
-    class Employee;
-
-    class AddressBook {
+    class List {
     private:
-        class Node {
-        public:
-            Employee m_data;
-            Node *next = nullptr;
+        int *m_list = nullptr;
+        size_t m_size = 0;
 
-            Node() = default;
-            Node(const Employee &data) : m_data(data) {}
-        };
-        Node *m_head;
-        size_t m_size;
+        // List(const List&); // Запрещает использование конструктора копирования
+
+        int& at(size_t idx); // Нужно добавить соотсетствующий оператор
     public:
-        AddressBook(const Employee &data);
+        List() = default;
+        explicit List(size_t size); // Запрещает запись List l = 10;
+        List(const List&) = delete; // Запрещает использование конструктора копирования
 
-        AddressBook(size_t size);
+        void append(int data);
+        void extend(const List &another);
+        List operator+(const List &another) const;
 
-        Employee& at(size_t idx);
+        int& operator[](size_t idx);
+        // List l = {1, 2, 3};
+        // l[2] = 5;
+        const int& operator[](size_t idx) const;
+        // void func(const List &l) { l[2];}
 
-        void setEmployeeData(size_t idx, uint32_t uid, const std::string &username,
-                             const std::string &name, float salary);
+        bool operator==(const List &another) const;
+        bool operator!=(const List &another) const;
 
-        void addEmployee();
+        List& operator=(const List &another);
+        // List l = {1, 2, 3};
+        // l = l;
 
-        void addEmployee(uint32_t uid, const std::string &username,
-                         const std::string &name, float salary);
-
-        ~AddressBook();
-
-        friend class Logger;
+        friend std::ostream& operator<<(std::ostream &out, const List &list);
     };
 
-    class Employee {
+    class Integer {
     private:
-        uint32_t m_uid;
-        std::string m_username;
-        std::string m_name;
-        float m_salary;
+        int m_data;
     public:
-        Employee() = default;
-        Employee(uint32_t uid, const std::string &username, const std::string &name, float salary);
-        uint32_t getUid() const;
-        std::string getUsername() const;
-        std::string getName() const;
-        float getSalaty() const;
-        friend void AddressBook::setEmployeeData(size_t idx, uint32_t uid, const std::string &username,
-                                                 const std::string &name, float salary);
+        Integer();
+        Integer(int data);
+
+        Integer operator+(const Integer &rgh) const; // Integer + Integer
+        Integer operator+(int rgh) const; // Integer + int
+        // friend Integer operator+(int lft, const Integer &rgh); // int + Integer
+
+        Integer& operator++(); // Префикс
+        Integer operator++(int); // Постфикс
+        Integer& operator--(); // Префикс
+        Integer operator--(int); // Постфикс
+        operator int() const;
+        // Печать на экран и ввод с консоли
     };
 
-
-    class Logger {
-    private:
-        std::ofstream file;
-    public:
-        Logger(const std::string &log_file);
-
-        void print(const AddressBook &address_book);
-    };
+    Integer operator+(int lft, const Integer &rgh);
 }
 
 #endif

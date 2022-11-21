@@ -3,46 +3,48 @@
 #include <cassert>
 
 namespace TestLib {
-    AddressBook::AddressBook(const Employee &data) {
-        m_head = new Node(Employee(data.getUid(), data.getUsername(), data.getName(), data.getSalaty()));
-        m_size = 1;
+    List::List(size_t size) : m_list(new int[size]), m_size(size) {}
+
+    List& List::operator=(const List &another) {
+        if (this != &another) {
+            delete m_list;
+            m_list = new int[another.m_size];
+            for (size_t i = 0; i < another.m_size; i++) {
+                m_list[i] = another.m_list[i];
+            }
+            m_size = another.m_size;
+        }
+        return *this;
     }
 
-    AddressBook::AddressBook(size_t size) {
-        for (size_t i = 0; i < size; i++) {
-            addEmployee();
-        }
+    Integer::Integer(int data) : m_data(data) {}
+
+    Integer& Integer::operator++() {
+        m_data++;
+        return *this;
+    }
+    Integer& Integer::operator--() {
+        m_data--;
+        return *this;
     }
 
-    void AddressBook::addEmployee() {
-        m_size++;
-        if (!m_head) {
-            m_head = new Node;
-            return;
-        }
-        Node *cur_node = m_head;
-        while (cur_node->next) {
-            cur_node = cur_node->next;
-        }
-        cur_node->next = new Node;
+    Integer Integer::operator++(int) {
+        Integer tmp {m_data};
+        m_data++;
+        return tmp;
     }
 
-    void AddressBook::setEmployeeData(size_t idx, uint32_t uid, const std::string &username,
-                                      const std::string &name, float salary) {
-        Employee data = at(idx);
-        data.m_uid = uid;
-        data.m_username = username;
-        data.m_name = name;
-        data.m_salary = salary;
+    Integer Integer::operator--(int) {
+        Integer tmp {m_data};
+        m_data--;
+        return tmp;
     }
 
-    Employee& AddressBook::at(size_t idx) {
-        assert(idx >= m_size);
+    Integer::operator int() const{
+        return m_data;
+    }
 
-        Node *cur_node = m_head;
-        for (size_t i = 0; i < idx; i++) {
-            cur_node = cur_node->next;
-        }
-        return cur_node->m_data;
+    Integer operator+(int lft, const Integer &rgh) {
+        return {lft + rgh};
     }
 }
