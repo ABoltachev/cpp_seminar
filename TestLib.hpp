@@ -4,59 +4,44 @@
 #include <iostream>
 
 namespace TestLib {
-    class List {
-    private:
-        int *m_list = nullptr;
-        size_t m_size = 0;
-
-        // List(const List&); // Запрещает использование конструктора копирования
-
-        int& at(size_t idx); // Нужно добавить соотсетствующий оператор
+    class Human {
+    // TODO
+        std::string m_name;
     public:
-        List() = default;
-        explicit List(size_t size); // Запрещает запись List l = 10;
-        List(const List&) = delete; // Запрещает использование конструктора копирования
+        /*TODO*/ Human(const std::string &name);
 
-        void append(int data);
-        void extend(const List &another);
-        List operator+(const List &another) const;
+        std::string className() { return "Human"; } // TODO
 
-        int& operator[](size_t idx);
-        // List l = {1, 2, 3};
-        // l[2] = 5;
-        const int& operator[](size_t idx) const;
-        // void func(const List &l) { l[2];}
-
-        bool operator==(const List &another) const;
-        bool operator!=(const List &another) const;
-
-        List& operator=(const List &another);
-        // List l = {1, 2, 3};
-        // l = l;
-
-        friend std::ostream& operator<<(std::ostream &out, const List &list);
+        bool isHumanClass() { return true; } // TODO
     };
 
-    class Integer {
-    private:
-        int m_data;
+    class Employee /* TODO */ {
+    // TODO
+        float m_salary;
     public:
-        Integer();
-        Integer(int data);
+        Employee(const std::string &name, float salary);
 
-        Integer operator+(const Integer &rgh) const; // Integer + Integer
-        Integer operator+(int rgh) const; // Integer + int
-        // friend Integer operator+(int lft, const Integer &rgh); // int + Integer
-
-        Integer& operator++(); // Префикс
-        Integer operator++(int); // Постфикс
-        Integer& operator--(); // Префикс
-        Integer operator--(int); // Постфикс
-        operator int() const;
-        // Печать на экран и ввод с консоли
+        std::string className() { return "Employee"; } // TODO
     };
 
-    Integer operator+(int lft, const Integer &rgh);
+    class Manager /* TODO */ {
+    // TODO
+        std::string m_project_name;
+    public:
+        Manager(const std::string &name, const std::string &project_name);
+
+        std::string className() { return "Manager"; } // TODO
+    };
+
+    class CEO : public Human {
+    // TODO
+        std::string m_company_name;
+    public:
+        CEO(const std::string &name, const std::string &project_name, float salary,
+            const std::string &company_name);
+
+        std::string className() { return "CEO"; } // TODO
+    };
 }
 
 #endif
