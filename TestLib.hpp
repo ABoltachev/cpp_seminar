@@ -7,11 +7,17 @@ namespace TestLib {
     class Human {
     protected:
         std::string m_name;
+        // Human() = default;
+        // explicit Human(const std::string &name);
     public:
         Human() = default;
         explicit Human(const std::string &name);
 
-        /*TODO*/ std::string className() const /*TODO*/ { return "Human"; }
+        virtual std::string className() const = 0;
+
+        virtual Human* test() { return this; }
+
+        virtual ~Human() {};
     };
 
     class Employee : public Human {
@@ -22,7 +28,9 @@ namespace TestLib {
         Employee() = default;
         Employee(const std::string &name, float salary);
 
-        const char* className() const /*TODO*/ { return "Employee"; }
+        Employee* test() override { return this; }
+
+        std::string className() const override { return "Employee"; }
     };
 
     class Project {
@@ -39,21 +47,22 @@ namespace TestLib {
     public:
         Manager(const std::string &name, const std::string &project_name);
 
-        std::string className() /*TODO*/ { return "Manager"; }
+        std::string className() const override { return "Manager"; }
 
         ~Manager() {
+            std::cout << "~Manager called" << std::endl;
             delete m_proj;
         }
     };
 
-    class CEO /*TODO*/ : public Employee, public Manager {
+    class CEO final : public Employee, public Manager {
     private:
         std::string m_company_name;
     public:
         CEO(const std::string &name, const std::string &project_name, float salary,
             const std::string &company_name);
 
-        std::string className() const /*TODO*/ { return "CEO"; }
+        std::string className() const override final { return "CEO"; }
     };
 }
 

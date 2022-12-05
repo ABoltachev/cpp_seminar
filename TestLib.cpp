@@ -12,4 +12,8 @@ namespace TestLib {
     CEO::CEO(const std::string &name, const std::string &project_name, float salary,
              const std::string &company_name) : m_company_name(company_name), Employee(name, salary),
                                                 Manager(name, project_name) {}
+
+    std::string TestLib::Human::className() const {
+        return "Human";
+    }
 }
