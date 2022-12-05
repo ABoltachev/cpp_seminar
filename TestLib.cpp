@@ -5,7 +5,9 @@ namespace TestLib {
 
     Employee::Employee(const std::string &name, float salary) : m_salary(salary), Human(name) {}
 
-    Manager::Manager(const std::string &name, const std::string &project_name) : m_project_name(project_name), Human(name) {}
+    Manager::Manager(const std::string &name, const std::string &project_name) : Human(name) {
+        m_proj = new Project(project_name);
+    }
 
     CEO::CEO(const std::string &name, const std::string &project_name, float salary,
              const std::string &company_name) : m_company_name(company_name), Employee(name, salary),

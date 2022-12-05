@@ -11,14 +11,10 @@ namespace TestLib {
         Human() = default;
         explicit Human(const std::string &name);
 
-        std::string className() const { return "Human"; }
-
-        bool isHumanClass() const { return true; }
+        /*TODO*/ std::string className() const /*TODO*/ { return "Human"; }
     };
 
     class Employee : public Human {
-    private:
-        using Human::isHumanClass;
     protected:
         uint64_t id;
         float m_salary;
@@ -26,36 +22,38 @@ namespace TestLib {
         Employee() = default;
         Employee(const std::string &name, float salary);
 
-        std::string className() const { return "Employee"; }
+        const char* className() const /*TODO*/ { return "Employee"; }
+    };
+
+    class Project {
+    private:
+        std::string m_name;
+    public:
+        Project(const std::string &name) : m_name(name) {}
     };
 
     class Manager : public Human {
     protected:
         uint64_t id;
-        std::string m_project_name;
+        Project *m_proj = nullptr;
     public:
         Manager(const std::string &name, const std::string &project_name);
 
-        std::string className() const { return "Manager"; }
-        bool isHumanClass() = delete;
+        std::string className() /*TODO*/ { return "Manager"; }
+
+        ~Manager() {
+            delete m_proj;
+        }
     };
 
-    class CEO : public Employee, public Manager {
+    class CEO /*TODO*/ : public Employee, public Manager {
     private:
         std::string m_company_name;
     public:
         CEO(const std::string &name, const std::string &project_name, float salary,
             const std::string &company_name);
 
-        void test() {
-            Employee::m_name = "";
-            Manager::m_name = "";
-
-            Employee::id = 0;
-            Manager::id = 1;
-        }
-
-        std::string className() const { return "CEO"; }
+        std::string className() const /*TODO*/ { return "CEO"; }
     };
 }
 
