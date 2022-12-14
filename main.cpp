@@ -5,9 +5,21 @@
 
 int main() {
     // TestLib::Human obj;
-    TestLib::Human *array[] = {new TestLib::Employee("Alex", 15),
-                               new TestLib::Manager("Alex", "DS")};
-    std::cout << array[1]->className() << std::endl;
-    delete array[1];
+    std::string test;
+    TestLib::Human *array[] = {new TestLib::Employee("Alex", 15)};
+
+    try {
+        std::cin >> *array[0];
+    }
+    catch (TestLib::IncorrectID &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    catch (TestLib::ValueError &ex) {
+        std::cout << ex.what() << std::endl;
+    }
+
+    std::cin >> test;
+    std::cout << *array[0] << std::endl;
+    std::cout << test << std::endl;
     return 0;
 }

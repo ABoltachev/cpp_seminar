@@ -2,13 +2,24 @@
 #define TESTLIB_H
 
 #include <iostream>
+#include <stdexcept>
 
 namespace TestLib {
+    class ValueError : public std::runtime_error {
+    public:
+        ValueError(const std::string &msg) : std::runtime_error(msg) {}
+        // const char* what() const throw() override; не нужен, так как уже определен в базовом
+    };
+
+    class IncorrectID : public ValueError {
+    public:
+        IncorrectID() : ValueError("Incorrect ID") {}
+    };
+
+
     class Human {
     protected:
         std::string m_name;
-        // Human() = default;
-        // explicit Human(const std::string &name);
     public:
         Human() = default;
         explicit Human(const std::string &name);
@@ -18,9 +29,15 @@ namespace TestLib {
         virtual Human* test() { return this; }
 
         virtual ~Human() {};
+
+        virtual std::ostream& print(std::ostream &out) const;
+        virtual std::istream& input(std::istream &in) = 0;
+
+        friend std::ostream& operator<<(std::ostream &out, const Human &p);
+        friend std::istream& operator>>(std::istream &in, Human &p);
     };
 
-    class Employee : public Human {
+    class Employee : virtual public Human {
     protected:
         uint64_t id;
         float m_salary;
@@ -31,6 +48,10 @@ namespace TestLib {
         Employee* test() override { return this; }
 
         std::string className() const override { return "Employee"; }
+
+        std::ostream& print(std::ostream &out) const override;
+
+        std::istream& input(std::istream& in) override;
     };
 
     class Project {
@@ -40,7 +61,7 @@ namespace TestLib {
         Project(const std::string &name) : m_name(name) {}
     };
 
-    class Manager : public Human {
+    class Manager : virtual public Human {
     protected:
         uint64_t id;
         Project *m_proj = nullptr;
