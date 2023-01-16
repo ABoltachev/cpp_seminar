@@ -2,89 +2,52 @@
 #define TESTLIB_H
 
 #include <iostream>
-#include <stdexcept>
+#include <string>
 
 namespace TestLib {
-    class ValueError : public std::runtime_error {
-    public:
-        ValueError(const std::string &msg) : std::runtime_error(msg) {}
-        // const char* what() const throw() override; не нужен, так как уже определен в базовом
-    };
-
-    class IncorrectID : public ValueError {
-    public:
-        IncorrectID() : ValueError("Incorrect ID") {}
-    };
-
-
-    class Human {
-    protected:
-        std::string m_name;
-    public:
-        Human() = default;
-        explicit Human(const std::string &name);
-
-        virtual std::string className() const = 0;
-
-        virtual Human* test() { return this; }
-
-        virtual ~Human() {};
-
-        virtual std::ostream& print(std::ostream &out) const;
-        virtual std::istream& input(std::istream &in) = 0;
-
-        friend std::ostream& operator<<(std::ostream &out, const Human &p);
-        friend std::istream& operator>>(std::istream &in, Human &p);
-    };
-
-    class Employee : virtual public Human {
-    protected:
-        uint64_t id;
-        float m_salary;
-    public:
-        Employee() = default;
-        Employee(const std::string &name, float salary);
-
-        Employee* test() override { return this; }
-
-        std::string className() const override { return "Employee"; }
-
-        std::ostream& print(std::ostream &out) const override;
-
-        std::istream& input(std::istream& in) override;
-    };
-
-    class Project {
+    template<class Data>
+    class Array {
     private:
-        std::string m_name;
+        size_t m_size = 0;
+        Data *m_arr = nullptr;
     public:
-        Project(const std::string &name) : m_name(name) {}
+        Array() = default;
+        explicit Array(size_t size);
+        Array(const std::initializer_list<Data> &init_list);
     };
 
-    class Manager : virtual public Human {
-    protected:
-        uint64_t id;
-        Project *m_proj = nullptr;
+    template<class Data, size_t size>
+    class StaticArray;
+
+    template<class Data, size_t size>
+    std::ostream& operator<<(std::ostream &out, const StaticArray<Data, size> &obj);
+
+    template<class Data, size_t size>
+    class StaticArray {
+    private:
+        Data m_arr[size];
     public:
-        Manager(const std::string &name, const std::string &project_name);
+        StaticArray() = default;
 
-        std::string className() const override { return "Manager"; }
+        friend std::ostream& operator<< <>(std::ostream &out, const StaticArray<Data, size> &obj);
+    };
 
-        ~Manager() {
-            std::cout << "~Manager called" << std::endl;
-            delete m_proj;
+    class startarr {
+    private:
+        std::string m_type_name;
+    public:
+        startarr(const std::string &type_name) : m_type_name(type_name) {}
+
+        friend std::ostream& operator<<(std::ostream &out, const startarr &manip) {
+            return out << "Array<" << manip.m_type_name << ">: [";
         }
     };
 
-    class CEO final : public Employee, public Manager {
-    private:
-        std::string m_company_name;
-    public:
-        CEO(const std::string &name, const std::string &project_name, float salary,
-            const std::string &company_name);
-
-        std::string className() const override final { return "CEO"; }
-    };
+    std::ostream& endarr(std::ostream &out) {
+        return out << ']';
+    }
 }
+
+#include "TestLib.tpp"
 
 #endif
