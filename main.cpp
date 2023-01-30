@@ -4,9 +4,10 @@
 #include <iostream>
 
 int main() {
-    const size_t i = 1;
-    TestLib::StaticArray<int, i> arr;
-    TestLib::Array<int> arr_1 {1, 2, 3};
-    std::cout << TestLib::startarr("int") << arr << TestLib::endarr << std::endl;
+    AutoPtr<int> ptr_2;
+    {
+        AutoPtr<int> ptr_1 {3};
+        ptr_2 = std::move(ptr_1);
+    }
     return 0;
 }

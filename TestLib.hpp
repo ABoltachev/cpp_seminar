@@ -1,52 +1,40 @@
 #ifndef TESTLIB_H
 #define TESTLIB_H
 
-#include <iostream>
-#include <string>
+#include <stdexcept>
 
-namespace TestLib {
-    template<class Data>
-    class Array {
-    private:
-        size_t m_size = 0;
-        Data *m_arr = nullptr;
-    public:
-        Array() = default;
-        explicit Array(size_t size);
-        Array(const std::initializer_list<Data> &init_list);
-    };
+template <typename Data>
+class AutoPtr {
+private:
+    Data *m_ptr = nullptr;
+    size_t m_size = 0;
 
-    template<class Data, size_t size>
-    class StaticArray;
+    void checkArray(size_t idx) const;
+public:
+    AutoPtr(Data *ptr = nullptr);
 
-    template<class Data, size_t size>
-    std::ostream& operator<<(std::ostream &out, const StaticArray<Data, size> &obj);
+    explicit AutoPtr(size_t size);
 
-    template<class Data, size_t size>
-    class StaticArray {
-    private:
-        Data m_arr[size];
-    public:
-        StaticArray() = default;
+    AutoPtr(const AutoPtr &obj) = delete;
 
-        friend std::ostream& operator<< <>(std::ostream &out, const StaticArray<Data, size> &obj);
-    };
+    AutoPtr(AutoPtr &&obj);
 
-    class startarr {
-    private:
-        std::string m_type_name;
-    public:
-        startarr(const std::string &type_name) : m_type_name(type_name) {}
+    ~AutoPtr();
 
-        friend std::ostream& operator<<(std::ostream &out, const startarr &manip) {
-            return out << "Array<" << manip.m_type_name << ">: [";
-        }
-    };
+    size_t size() const;
 
-    std::ostream& endarr(std::ostream &out) {
-        return out << ']';
-    }
-}
+    Data& operator*() const;
+
+    Data* operator->() const;
+
+    Data& operator[](size_t idx);
+
+    const Data& operator[](size_t idx) const;
+
+    AutoPtr& operator=(AutoPtr &&obj);
+
+    operator bool() const;
+};
 
 #include "TestLib.tpp"
 
