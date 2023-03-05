@@ -4,6 +4,16 @@
 #include <testlib/utils.hpp>
 #include <map>
 #include <vector>
+#include <testlib/patterns.hpp>
+#include <memory>
+#include <thread>
+
+void test(std::string name){
+    std::shared_ptr singleton = Singleton::instance();
+    singleton->set_name(name);
+    singleton->print();
+
+}
 
 int main() {
     std::map<int, int> dict = {
@@ -26,6 +36,13 @@ int main() {
         std::cout << i << ' ';
     }
     std::cout << std::endl;
+
+    std::thread t1(test, "test1");
+    std::thread t2(test, "test2");
+
+    t1.join();
+    t2.join();
+
 
     // for (auto it = vect.begin(); it != vect.end(); it++) {
     //     ;
